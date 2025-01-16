@@ -1,6 +1,3 @@
-Here is the `README.md` version of the comprehensive guide for your project:
-
-
 # LLM Evaluation Using RAGAS
 
 ## Overview
