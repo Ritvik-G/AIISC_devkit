@@ -1,0 +1,18 @@
+[
+    {
+        "user_input": "This is the user prompt",
+        "retrieved_contexts": [
+            "This is the retrieved content (RAG document chunks)"
+        ],
+        "response": "This is your model generated answer",
+        "reference": "This is the ground truth answer"
+    },
+    {
+        "user_input": "Ann Arbor ranks 1st among what goods sold?",
+        "retrieved_contexts": [
+            "page_content='The Ann Arbor Hands-On Museum is located in a renovated and expanded historic downtown fire station. Multiple art galleries exist in the city, notably in the downtown area and around the University of Michigan campus. Aside from a large restaurant scene in the Main Street, South State Street, and South University Avenue areas, Ann Arbor ranks first among U.S. cities in the number of booksellers and books sold per capita. The Ann Arbor District Library maintains four branch outlets in addition to its main downtown building. The city is also home to the Gerald R. Ford Presidential Library.'"
+        ],
+        "response": "According to the provided page content, Ann Arbor ranks 1st among U.S. cities in the number of booksellers and books sold per capita.",
+        "reference": "books"
+    }
+]
