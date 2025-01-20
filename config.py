@@ -1,5 +1,3 @@
-# Toggle any of the boolean values to True for activation of the metric's run on your dataset
-
 # LLM-based metrics (RAGAS Only)
 LLM_METRICS = {
     "OpenAI_API" : "<Paste your API key here>",
@@ -13,7 +11,7 @@ LLM_METRICS = {
     "Faithfulness" : True,
 }
 
-# Non-LLM-based metrics
+# Quantitative metrics
 METRICS = {
     "bleu" : True, 
     "rouge" : True, 
