@@ -100,10 +100,11 @@ if evaluation_results:
     output_json = create_json(scores)
 
     # Write the transformed JSON to the file
-    with open('llm_scores.json', 'w') as json_file:
+    output_file = "ragas_scores.json"
+    with open(output_file, 'w') as json_file:
         json.dump(output_json, json_file, indent=4)
 
-    print("RAGAS Results saved to llm_scores.json")
+    print(f"Metrics results saved to {output_file}")
 
 
 
@@ -137,7 +138,7 @@ if metrics_results:
     combined_data = combine_metrics_results(metrics_results)
 
     # Write to a JSON file
-    output_file = "metrics_scores.json"
+    output_file = "quant_scores.json"
     with open(output_file, "w") as f:
         json.dump(combined_data, f, indent=4)
 
