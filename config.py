@@ -1,9 +1,9 @@
 # LLM-based metrics (RAGAS Only)
 LLM_METRICS = {
-    "OpenAI_API" : "<Paste your API key here>",
     "OpenAI_Model" : "gpt-4o",
+    "OpenAI_API" : "<Paste your API key here>",
     "LLMContextPrecisionWithoutReference" : False,
-    "LLMContextPrecisionWithReference" : True,
+    "LLMContextPrecisionWithReference" : False,
     "LLMContextRecall" : True,
     "ContextEntityRecall" : False,
     "NoiseSensitivity" : False,
