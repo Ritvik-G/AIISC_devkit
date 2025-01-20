@@ -26,22 +26,24 @@ cd AIISC_devkit
 This project requires the following python packages. Install them using `pip`:
 
 ```bash
-pip install ragas pandas evaluate nubia-score rouge_score
+pip install ragas pandas evaluate nubia-score rouge_score --quiet
 ```
 
 ### 3. Set up the configuration
 
-1. **Obtain your OpenAI API Key**:
-   - If you don’t have an OpenAI API key, you can get one from [OpenAI](https://beta.openai.com/signup/).
+1. **Prepare the dataset**:
+   - The dataset is expected to be in the `data.json` format. Modify or create your own `data.json` file with a similar structure. You can refer to the example in the `data.json` file in the repository.
+   - You can edit the location of the dataset file by just pasting the path of your data file in ``DATA_FILE`` line in ``Config.py``.
 
-2. **Configure your metrics**:
+**NOTE** - There are two different types of metrics available and here's how you setup for both of them:
+  
+2. **RAGAS**
+   - **Obtain your OpenAI API Key**: If you don’t have an OpenAI API key, you can get one from [OpenAI](https://beta.openai.com/signup/).
    - Open the `config.py` file and replace the placeholder in `LLM_METRICS['OpenAI_API']` with your actual OpenAI API key.
    - Set your desired model in `LLM_METRICS['OpenAI_Model']`, for example, `"gpt-4"`.
    - Toggle the metrics to either True or False depending on the necessity.
-   - **NOTE** - Generic Metrics (Bleu, Rouge) are still under development. 
-
-   Example:
-
+   - Please install `ragas` using the pip command given in section 2.
+     
    ```python
    LLM_METRICS = {
        "OpenAI_API": "your-openai-api-key",
@@ -55,10 +57,19 @@ pip install ragas pandas evaluate nubia-score rouge_score
        "Faithfulness": True,
    }
    ```
-
-3. **Prepare the dataset**:
-   - The dataset is expected to be in the `data.json` format. Modify or create your own `data.json` file with a similar structure. You can refer to the example in the `data.json` file in the repository.
-   - You can edit the location of the dataset file by just pasting the path of your data file in ``DATA_FILE`` line in ``Config.py``.
+3. **Quantitative Metrics**
+   - Toggle the metrics to either True or False depending on the necessity (similar to LLM_Metrics).
+   - Please install the following dependencies - `evaluate nubia-score rouge_score` using the pip command given in section 2.
+     
+   ```python
+   METRICS = {
+       "bleu" : True, 
+       "rouge" : True, 
+       "meteor" : True, 
+       "nubia" : True,
+   }
+   ```
+   
 
 ## Running the Evaluation
 
@@ -82,16 +93,20 @@ This will:
 ### 2. Output
 
 The results will be saved to a `scores.json` file. The results are structured as a list of metrics with their corresponding scores.
+The results will be saved in two different files: 
+1. `ragas_scores.json` : All RAGAS based scores would be available here.
+2. `quant_scores.json` : All Quantitative based scores would be available here.
 
 ## Folder Structure
 
 ```plaintext
 llm-evaluation/
 │
-├── main.py              # Main evaluation script
-├── config.py            # Configuration file for setting up LLM-based metrics
-├── data.json            # Input dataset for evaluation
-└── scores.json          # Output results file 
+├── main.py                # Main evaluation script
+├── config.py              # Configuration file for setting up LLM-based metrics
+├── data.json              # Input dataset for evaluation
+├── ragas_scores.json      # RAGAS framework outputs
+└── quant_scores.json      # Quantitative metrics outputs
 ```
 
 ## Troubleshooting
