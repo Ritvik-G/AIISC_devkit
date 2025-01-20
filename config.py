@@ -1,4 +1,4 @@
-# Configuration file for evaluation metrics in the RAGAS framework only for RAG and Natural Language Comparison metrics. Others, yet to apply.
+# Toggle any of the boolean values to True for activation of the metric's run on your dataset
 
 # LLM-based metrics (RAGAS Only)
 LLM_METRICS = {
@@ -6,22 +6,19 @@ LLM_METRICS = {
     "OpenAI_Model" : "gpt-4o",
     "LLMContextPrecisionWithoutReference" : False,
     "LLMContextPrecisionWithReference" : True,
-    "LLMContextRecall" : False,
-    "ContextEntityRecall" : True,
-    "NoiseSensitivity" : True,
-    "ResponseRelevancy" : False,
+    "LLMContextRecall" : True,
+    "ContextEntityRecall" : False,
+    "NoiseSensitivity" : False,
+    "ResponseRelevancy" : True,
     "Faithfulness" : True,
 }
 
 # Non-LLM-based metrics
 METRICS = {
-    "NonLLMContextPrecisionWithReference" : False, # RAG
-    "NonLLMContextRecall" : False, # RAG
-    "NonLLMStringSimilarity" : True, # Traditional NLP Metrics (NLC)
-    "BleuScore" : True, # Traditional NLP Metrics (NLC)
-    "RougeScore" : True, # Traditional NLP Metrics (NLC)
-    "ExactMatch" : True, # Traditional NLP Metrics (NLC)
-    "StringPresence" : True,
+    "bleu" : True, 
+    "rouge" : True, 
+    "meteor" : True, 
+    "nubia" : True,
 }
 
 # Data file path

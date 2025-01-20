@@ -26,7 +26,7 @@ cd AIISC_devkit
 This project requires the following python packages. Install them using `pip`:
 
 ```bash
-pip install ragas pandas
+pip install ragas pandas evaluate nubia-score rouge_score
 ```
 
 ### 3. Set up the configuration
