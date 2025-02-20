@@ -20,16 +20,29 @@ Start by cloning this repository to your local machine:
 git clone https://github.com/Ritvik-G/AIISC_devkit.git
 cd AIISC_devkit
 ```
+### 2. Creating a Virtual Environment
+Prior to installing the requirements, it is recommended to create a virtual environment to avoid any dependency clashes.
 
-### 2. Install dependencies
+In your terminal or command prompt, run the following command to create a virtual environment:
+```bash
+python -m venv myenv
+```
+
+Activate the virtual environment using the following script
+```bash
+source myenv/bin/activate  # On macOS/Linux
+myenv\Scripts\activate     # On Windows
+```
+
+### 3. Install dependencies
 
 This project requires the following python packages. Install them using `pip`:
 
 ```bash
-pip install ragas pandas evaluate nubia-score rouge_score --quiet
+pip install -r requirements.txt
 ```
 
-### 3. Set up the configuration
+### 4. Set up the configuration
 
 1. **Prepare the dataset**:
    - The dataset is expected to be in the `data.json` format. Modify or create your own `data.json` file with a similar structure. You can refer to the example in the `data.json` file in the repository.
@@ -59,14 +72,13 @@ pip install ragas pandas evaluate nubia-score rouge_score --quiet
    ```
 3. **Quantitative Metrics**
    - Toggle the metrics to either True or False depending on the necessity (similar to LLM_Metrics).
-   - Please install the following dependencies - `evaluate nubia-score rouge_score` using the pip command given in section 2.
      
    ```python
    METRICS = {
        "bleu" : True, 
        "rouge" : True, 
        "meteor" : True, 
-       "nubia" : True,
+       "roberta-nli" : True,
    }
    ```
    
