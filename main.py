@@ -3,10 +3,11 @@ import os
 import json
 import importlib
 import pandas as pd
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 # Non-LLM Imports
 import evaluate as hf_eval
-from nubia_score import Nubia
 
 # RAGAS Imports
 from ragas import EvaluationDataset
@@ -27,25 +28,47 @@ if LLM_METRICS['OpenAI_API']:
 else:
     raise ValueError("OpenAI API key not found in LLM_BASED_METRICS.")
 
-#Evaluator loaders
+# Evaluator loaders
 evaluator_llm = LangchainLLMWrapper(ChatOpenAI(model=LLM_METRICS['OpenAI_Model']))
 evaluator_embeddings = LangchainEmbeddingsWrapper(OpenAIEmbeddings())
 
 # RAGAS evaluation library loaders
 def ragas_evaluate_metric(dataset, metric):
     print(metric)
-    ragas_metric = getattr(importlib.import_module('ragas.metrics'),metric)
-    res = evaluate(dataset=dataset,metrics = [ragas_metric()], llm = evaluator_llm)
+    ragas_metric = getattr(importlib.import_module('ragas.metrics'), metric)
+    res = evaluate(dataset=dataset, metrics=[ragas_metric()], llm=evaluator_llm)
     return res
 
+# Define RoBERTa NLI score function
+def roberta_nli_score(sentence1, sentence2, model, tokenizer):
+    # Tokenize the input
+    inputs = tokenizer(sentence1, sentence2, return_tensors="pt", truncation=True)
+    # Get model predictions
+    with torch.no_grad():
+        logits = model(**inputs).logits
+    # Convert logits to probabilities (softmax)
+    probs = torch.nn.functional.softmax(logits, dim=-1)
+    # Extract probabilities for entailment, contradiction, and neutral
+    entailment_prob = probs[:, 2].item()
+    contradiction_prob = probs[:, 0].item()
+    neutral_prob = probs[:, 1].item()
+    return {
+        "Entailment Score": entailment_prob,
+        "Contradiction Score": contradiction_prob,
+        "Neutral Score": neutral_prob
+    }
+
 # HuggingFace evaluation library loaders
-def nonllm_evaluate_metric(data,metric):
+def nonllm_evaluate_metric(data, metric):
     print(metric)
     scores = []
-    if metric == 'nubia':
-        n = Nubia()
+    if metric == 'roberta-nli':
+        # Load the RoBERTa-large-mnli model and tokenizer once
+        model_name = "roberta-large-mnli"
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(model_name)
         for i in data:
-            score = n.score(i['reference'],i['response'],verbose=True,get_features=True)
+            score = roberta_nli_score(i['reference'], i['response'], model, tokenizer)
             scores.append(score)
     else:
         eval_metric = hf_eval.load(metric)
@@ -55,19 +78,18 @@ def nonllm_evaluate_metric(data,metric):
     return scores
 
 
-#Dataset Loaders 
-
+# Dataset Loaders 
 # Datafile Loader
 with open(DATA_FILE, mode='r', encoding='utf-8') as infile:
     data = json.load(infile)
 
-#data = data[:10] 
+# data = data[:10] 
 dataset = EvaluationDataset.from_list(data) 
 
 
 
 
-### 2. LLM Based Evalutation ###
+### 2. LLM Based Evaluation ###
 
 evaluation_results = []
 
@@ -77,7 +99,7 @@ if LLM_METRICS:
             evaluation_results.append(ragas_evaluate_metric(dataset, metric))
 
 if evaluation_results:
-    #Scores Dataframe
+    # Scores Dataframe
     df = pd.DataFrame(evaluation_results)
     scores = df['scores']
 
@@ -116,12 +138,11 @@ metrics_results = []
 if METRICS:
     for metric, metric_class in METRICS.items():
         if metric_class is True:
-            metrics_results.append(nonllm_evaluate_metric(data,metric))
+            metrics_results.append(nonllm_evaluate_metric(data, metric))
 
 # Combining to form a json file
 def combine_metrics_results(metrics_results):
     num_data_points = len(metrics_results[0])
-
     combined_data = []
     
     # Loop over each data point and combine the corresponding metrics from each metric set
@@ -143,7 +164,3 @@ if metrics_results:
         json.dump(combined_data, f, indent=4)
 
     print(f"Metrics results saved to {output_file}")
-
-
-
-

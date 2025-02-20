@@ -4,11 +4,11 @@ LLM_METRICS = {
     "OpenAI_Model" : "gpt-4o",
     "LLMContextPrecisionWithoutReference" : False,
     "LLMContextPrecisionWithReference" : False,
-    "LLMContextRecall" : True,
+    "LLMContextRecall" : False,
     "ContextEntityRecall" : False,
     "NoiseSensitivity" : False,
-    "ResponseRelevancy" : True,
-    "Faithfulness" : True,
+    "ResponseRelevancy" : False,
+    "Faithfulness" : False,
 }
 
 # Quantitative metrics
@@ -16,7 +16,7 @@ METRICS = {
     "bleu" : True, 
     "rouge" : True, 
     "meteor" : True, 
-    "nubia" : True,
+    "roberta-nli" : True,
 }
 
 # Data file path

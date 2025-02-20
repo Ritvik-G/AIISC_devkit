@@ -1,0 +1,44 @@
+[
+    {
+        "bleu": 0.0,
+        "precisions": [
+            0.5,
+            0.2,
+            0.0,
+            0.0
+        ],
+        "brevity_penalty": 1.0,
+        "length_ratio": 1.0,
+        "translation_length": 6,
+        "reference_length": 6,
+        "rouge1": 0.5,
+        "rouge2": 0.20000000000000004,
+        "rougeL": 0.5,
+        "rougeLsum": 0.5,
+        "meteor": 0.42592592592592593,
+        "Entailment Score": 0.0006117104785516858,
+        "Contradiction Score": 0.9975358247756958,
+        "Neutral Score": 0.001852489192970097
+    },
+    {
+        "bleu": 0.0,
+        "precisions": [
+            0.03571428571428571,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "brevity_penalty": 1.0,
+        "length_ratio": 28.0,
+        "translation_length": 28,
+        "reference_length": 1,
+        "rouge1": 0.07999999999999999,
+        "rouge2": 0.0,
+        "rougeL": 0.07999999999999999,
+        "rougeLsum": 0.07999999999999999,
+        "meteor": 0.1470588235294118,
+        "Entailment Score": 0.01819632574915886,
+        "Contradiction Score": 0.00558175565674901,
+        "Neutral Score": 0.9762218594551086
+    }
+]
